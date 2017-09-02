@@ -1,8 +1,19 @@
 var express = require('express');
-var publicController=require("./controllers/public-controller");
-var adminController=require("./controllers/admin-controller");
-var serviceController=require("./controllers/service-controller");
+var publicController = require("./controllers/public-controller");
+var adminController = require("./controllers/admin-controller");
+var serviceController = require("./controllers/service-controller");
 var router = express.Router();
+
+function checkSignIn(req, res, next) {
+    if (req.session.user) {
+        next(); //If session exists, proceed to page
+    } else {
+        // var err = new Error("Not logged in!");
+        //console.log(req.session.user);
+        //next(err); //Error, trying to access unauthorized page!
+        publicController.login(req, res);
+    }
+}
 
 
 router.get('/', publicController.index);
@@ -12,9 +23,9 @@ router.get('/login', publicController.login);
 
 router.get('/register', publicController.register);
 
-router.get('/movies', publicController.movies);
+router.get('/movies', checkSignIn, publicController.movies);
 
-router.get('/movies-up', publicController.movies_up);
+router.get('/movies-up', checkSignIn, publicController.movies_up);
 
 router.get('/about', publicController.about);
 

@@ -1,10 +1,11 @@
 var express = require('express');
 var path = require('path');
-var route = require('./route'); 
+var route = require('./route');
 var ejsLayouts = require("express-ejs-layouts");
 var bodyParser = require('body-parser')
+var session = require('express-session');
+var SQLiteStore = require('connect-sqlite3')(session);
 var app = express();
-//var cookieParser = require('cookie-parser');
 
 app.use(express.static('www'));
 
@@ -23,20 +24,30 @@ app.use(ejsLayouts);
 //app.use(cookieParser('M4ATA5'));
 //app.use(express.cookieSession());
 
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-})); 
+app.use(bodyParser.json()); // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
+    extended: true
+}));
+//app.use(express.methodOverride());
+//app.use(express.cookieParser());
 
-app.use('/',route);
+app.use(session({
+    store: new SQLiteStore,
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 } // 1 week 
+}));
+
+app.use('/', route);
 
 app.use(function(err, req, res, next) {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
 });
 
 app.listen(3000, function() {
-  console.log('Example app listening on port 3000!');
+    console.log('Example app listening on port 3000!');
 });
 
 
