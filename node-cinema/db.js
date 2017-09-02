@@ -1,6 +1,7 @@
 var path = require('path');
 var sqlite3 = require('sqlite3').verbose();
 
+
 function initDb()
 {
 	return new sqlite3.Database(path.join(__dirname, './db_cinema_ol.db'));
@@ -8,7 +9,7 @@ function initDb()
 
 exports.SpGetMoviesImageURL=function(callback)
 {
-	var sql="SELECT Movie_ImageURL FROM MovieInfo where Movie_Status=1 or Movie_Status=2;";
+	var sql="SELECT Movie_ImageURL,Movie_Title FROM MovieInfo where Movie_Status=1 or Movie_Status=2;";
 
 	var db=initDb();
 
@@ -22,9 +23,10 @@ exports.SpGetMoviesImageURL=function(callback)
 }
 
 
+
 exports.FillMovieList=function(callback)
 {
-	var sql="SELECT distinct Movie_Name FROM ShowInfo WHERE Show_Date>=date('now') and Movie_Name is not null";
+	var sql="SELECT distinct Movie_Name FROM ShowInfo WHERE Movie_Name is not null";
 
 	var db=initDb();
 
@@ -114,6 +116,32 @@ exports.FillTimeList=function(movie_name,movie_date,callback)
 	var db=initDb();
 
 	db.all(sql, [movie_date,movie_name], (err, rows) => {
+		if (err) {
+			throw err;
+		}
+		callback(rows);
+		db.close();
+	});	
+	
+}
+
+exports.SpAddShowInfo=function(post_data,callback)
+{
+ 	var sql=`  INSERT INTO ShowInfo
+	 (Show_Date
+	 ,Show_StartTime
+	 ,Movie_Name
+	 ,Hall_No)
+	 VALUES
+	 ( ?
+	 ,?
+	 ,?
+	 ,?);
+	 `;
+
+	var db=initDb();
+
+	db.all(sql, [post_data.datepicker, post_data.ddlTime,post_data.ddlMovie,post_data.ddlHall], (err, rows) => {
 		if (err) {
 			throw err;
 		}

@@ -2,6 +2,8 @@ var express = require('express');
 var publicController = require("./controllers/public-controller");
 var adminController = require("./controllers/admin-controller");
 var serviceController = require("./controllers/service-controller");
+var multer = require('multer')
+var upload = multer({ dest: './www/images/movieImages/' })
 var router = express.Router();
 
 function checkSignIn(req, res, next) {
@@ -30,6 +32,11 @@ router.get('/movies-up', checkSignIn, publicController.movies_up);
 router.get('/about', publicController.about);
 
 router.get('/contact', publicController.contact);
+
+router.get('/manage-show', publicController.manageShow);
+router.post('/manage-show', publicController.addShow);
+router.get('/manage-movie', publicController.manageMovie);
+router.post('/manage-movie', upload.single('fuPoster'), publicController.addMovie);
 
 
 

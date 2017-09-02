@@ -5,6 +5,7 @@ var ejsLayouts = require("express-ejs-layouts");
 var bodyParser = require('body-parser')
 var session = require('express-session');
 var SQLiteStore = require('connect-sqlite3')(session);
+
 var app = express();
 
 app.use(express.static('www'));
@@ -45,7 +46,7 @@ app.use(function(err, req, res, next) {
     res.status(500).send('Something broke!');
 });
 
-app.listen(3000, function() {
+app.listen(6900, function() {
     console.log('Example app listening on port 3000!');
 });
 

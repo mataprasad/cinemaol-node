@@ -1,4 +1,7 @@
 var db = require('../db');
+var fs = require("fs");
+var path = require('path');
+
 
 function initModel(req) {
     var rIp = req.connection.remoteAddress;
@@ -89,3 +92,48 @@ exports.contact = function(req, res) {
 
     res.render('public/contact', model);
 };
+
+exports.manageShow = function(req, res) {
+    
+        var model = initModel(req);
+
+        
+
+        db.SpGetMoviesImageURL(function(data) {
+            model.data = data;
+            res.render('public/manage-show', model);
+        });
+    
+     
+    };
+    
+    exports.addShow=function(req, res) {	
+        
+       res.set('Content-Type', 'application/json');
+       
+       db.SpAddShowInfo(req.body,function(data) {
+       var data={ text:"insterted success fully."};
+        res.send(data);	
+    });
+      
+    };
+
+
+    exports.addMovie=function(req, res) {	
+        fs.renameSync(req.file.path, req.file.path+path.extname(req.file.originalname));
+      // res.set('Content-Type', 'application/json');
+       
+      // db.SpAddShowInfo(req.body,function(data) {
+       //var data={ text:"insterted success fully."};
+       console.log(req.file);
+        res.send(req.body);	
+   // });
+      
+    };
+    
+    exports.manageMovie = function(req, res) {
+        
+            var model = initModel(req);
+        
+            res.render('public/manage-movie', model);
+        };
