@@ -2,8 +2,9 @@ var express = require('express');
 var publicController = require("./controllers/public-controller");
 var adminController = require("./controllers/admin-controller");
 var serviceController = require("./controllers/service-controller");
-var multer = require('multer')
-var upload = multer({ dest: './www/images/movieImages/' })
+var multer = require('multer');
+var common = require('./common');
+var upload = multer({ dest: common.config.upload_dest });
 var router = express.Router();
 
 function checkSignIn(req, res, next) {
