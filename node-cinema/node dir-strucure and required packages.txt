@@ -1,0 +1,49 @@
+--------------------------------------------------------------------------------------
+DIRECTORY STRUCTURE
+
+/root/
+	/app-init/
+		- route.js
+	/models/
+	/views/
+	/controllers/
+	/www/
+		/css/
+		/js/
+		/img/
+		/upload/		
+	/services/
+		- db.js
+		- config.js
+		- common.js
+		- crypto.js
+		
+	app.js/main.js/server.js
+
+--------------------------------------------------------------------------------------
+
+REQUIRED PACKAGES
+
+1) express
+2) body-parser
+3) cookie-parser
+4) multer
+5) ejs
+6) express-ejs-layouts
+7) express-session
+8) sqlite3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
