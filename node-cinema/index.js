@@ -4,6 +4,7 @@ var route = require('./route');
 var ejsLayouts = require("express-ejs-layouts");
 var bodyParser = require('body-parser')
 var session = require('express-session');
+var cookieParser = require('cookie-parser')
 var common = require('./common');
 var SQLiteStore = require('connect-sqlite3')(session);
 
@@ -36,7 +37,7 @@ app.use(session({
     saveUninitialized: true,
     cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 } // 1 week 
 }));
-
+app.use(cookieParser());
 app.use('/', route);
 
 app.use(function(err, req, res, next) {

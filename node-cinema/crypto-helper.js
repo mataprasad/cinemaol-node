@@ -17,9 +17,9 @@ function decrypt(text) {
     return dec;
 }
 
-var hw = encrypt("hello world")
-    // outputs hello world
-console.log(decrypt(hw));
+//var hw = encrypt("hello world")
+// outputs hello world
+//console.log(decrypt(hw));
 
 exports.encrypt = function(text) {
     return encrypt(text);

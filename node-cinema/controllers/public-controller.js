@@ -3,14 +3,23 @@ var fs = require("fs");
 var path = require('path');
 var url = require('url');
 var common = require('../common');
+var crypto_helper = require("../crypto-helper");
 
 exports.index = function(req, res) {
 
     var model = common.initModel(req);
 
+    //console.log(req.cookies);
+
     req.session.logged_user = { a: "Hello..." };
     req.session.user = "mata prasad chauhan";
     res.locals.req = req;
+
+    var randomNumber = Math.random().toString();
+    randomNumber = randomNumber.substring(2, randomNumber.length);
+    //console.log(JSON.stringify(req.session));
+    //res.cookie('cookieName', crypto_helper.encrypt(JSON.stringify(req.session)), { maxAge: 900000, httpOnly: true });
+    //console.log('cookie created successfully');
     /*
 
 	How to get req and res object of Expreejs in .ejs file
@@ -80,6 +89,10 @@ exports.movies_up = function(req, res) {
 };
 
 exports.about = function(req, res) {
+
+    //console.clear();
+    //var a = crypto_helper.decrypt(req.cookies.cookieName);
+    //console.log(a);
 
     var model = common.initModel(req);
 
