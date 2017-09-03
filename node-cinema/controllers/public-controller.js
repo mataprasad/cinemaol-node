@@ -4,14 +4,9 @@ var path = require('path');
 var url = require('url');
 var common = require('../common');
 
-function initModel(req) {
-    var rIp = req.connection.remoteAddress;
-    return { ip: rIp, data: null, message: null };
-}
-
 exports.index = function(req, res) {
 
-    var model = initModel(req);
+    var model = common.initModel(req);
 
     req.session.logged_user = { a: "Hello..." };
     req.session.user = "mata prasad chauhan";
@@ -48,7 +43,7 @@ If you want to access the "req/res" in the EJS templates, you can either pass th
 
 exports.login = function(req, res) {
 
-    var model = initModel(req);
+    var model = common.initModel(req);
 
     //model.data = req.session.logged_user;
     //console.log(req.session.logged_user);
@@ -58,7 +53,7 @@ exports.login = function(req, res) {
 
 exports.register = function(req, res) {
 
-    var model = initModel(req);
+    var model = common.initModel(req);
 
     res.render('public/register', model);
 };
@@ -66,7 +61,7 @@ exports.register = function(req, res) {
 
 exports.movies = function(req, res) {
 
-    var model = initModel(req);
+    var model = common.initModel(req);
 
     db.GetRunningMovies(function(data) {
         model.data = data;
@@ -76,7 +71,7 @@ exports.movies = function(req, res) {
 
 exports.movies_up = function(req, res) {
 
-    var model = initModel(req);
+    var model = common.initModel(req);
 
     db.GetUpCommingMovies(function(data) {
         model.data = data;
@@ -86,21 +81,21 @@ exports.movies_up = function(req, res) {
 
 exports.about = function(req, res) {
 
-    var model = initModel(req);
+    var model = common.initModel(req);
 
     res.render('public/about', model);
 };
 
 exports.contact = function(req, res) {
 
-    var model = initModel(req);
+    var model = common.initModel(req);
 
     res.render('public/contact', model);
 };
 
 exports.manageShow = function(req, res) {
 
-    var model = initModel(req);
+    var model = common.initModel(req);
 
 
 
@@ -141,7 +136,7 @@ exports.addMovie = function(req, res) {
     //});
 
     //res.set('Content-Type', 'application/json');
-    var model = initModel(req);
+    var model = common.initModel(req);
     db.SpAddNewMovie(req.body, finalName, function(data) {
         var message = "insterted success fully.";
 
@@ -152,14 +147,14 @@ exports.addMovie = function(req, res) {
 
 exports.manageMovie = function(req, res) {
 
-    var model = initModel(req);
+    var model = common.initModel(req);
 
 
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;
 
-    console.log(query);
-    console.log(req.params);
+    //console.log(query);
+    //console.log(req.params);
     model.message = "";
     res.render('public/manage-movie', model);
 };

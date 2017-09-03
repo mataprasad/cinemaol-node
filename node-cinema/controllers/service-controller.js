@@ -1,28 +1,21 @@
-var db=require('../db'); 
+var db = require('../db');
+var common = require('../common');
 
-function initModel(req)
-{
-	var rIp=req.connection.remoteAddress;
-	return {ip:rIp,data:null};
-}
+exports.fill_date_list = function(req, res) {
 
-exports.fill_date_list=function(req, res) {	
-	
-	res.set('Content-Type', 'application/json');
-	
-	db.FillDateList(req.body.pMovieTitle,function(data)
-	{
-		res.send(data);
-	});	
+    res.set('Content-Type', 'application/json');
+
+    db.FillDateList(req.body.pMovieTitle, function(data) {
+        res.send(data);
+    });
 };
 
 
-exports.fill_time_list=function(req, res) {	
-	
-	res.set('Content-Type', 'application/json');
+exports.fill_time_list = function(req, res) {
 
-	db.FillTimeList(req.body.pMovieTitle,req.body.pMovieDate,function(data)
-	{
-		res.send(data);
-	});	
+    res.set('Content-Type', 'application/json');
+
+    db.FillTimeList(req.body.pMovieTitle, req.body.pMovieDate, function(data) {
+        res.send(data);
+    });
 };

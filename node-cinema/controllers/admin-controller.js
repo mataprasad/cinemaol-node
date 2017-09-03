@@ -1,14 +1,8 @@
+var common = require('../common');
 
+exports.login = function(req, res) {
 
-function initModel(req)
-{
-	var rIp=req.connection.remoteAddress;
-	return {ip:rIp,data:null};
-}
+    var model = common.initModel(req);
 
-exports.login=function(req, res) {	
-	
-	var model=initModel(req);
-
-	res.render('admin/login', model)
+    res.render('admin/login', model)
 };
