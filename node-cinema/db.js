@@ -151,3 +151,31 @@ exports.SpAddShowInfo=function(post_data,callback)
 	
 }
 
+exports.SpAddNewMovie=function(data,img_url,callback)
+{
+	var sql1=`
+		SELECT ifnull(MAX(Movie_Id),0) as sno FROM MovieInfo;
+	`;
+	var db=initDb();
+
+	db.get(sql1, [], (err, row) => {
+   		
+   		var sno=parseInt(row.sno)+1;
+
+   		var sql2=`INSERT INTO MovieInfo (Movie_Id,Movie_ImageURL,
+   		Movie_Status,Movie_Title,
+        Movie_ReleaseDate,Movie_Director,Movie_Casts,
+        Movie_Language,Movie_Industry) 
+        VALUES (?,?,?,?,?,?,?,?,?)`;
+
+		db.all(sql2, [""+sno,img_url,data.ddlStatus,data.txtTitle,data.txtReleaseDate
+			,data.txtDirector,data.txtCasts,data.ddlLanguage,data.ddlIndustry], (err, rows) => {
+			if (err) {
+				throw err;
+			}
+			callback(rows);
+			db.close();
+		});
+	
+	});	
+}

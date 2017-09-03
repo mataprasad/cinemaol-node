@@ -7,6 +7,9 @@
             </div>
         </div>
         <p style="color: red;">
+        <% if (message && message!=null && message.length>0) { %>
+        <%=message %> 
+        <% } %>
         </p>
         <table class="style7">
             <tbody><tr>
@@ -120,6 +123,7 @@
         </tbody></table>
 
     </div>
+    
 </form>
 <link href="/resources/AjaxCalendar/AjaxCalendar.css" rel="stylesheet" type="text/css" />
 <script src="/resources/AjaxCalendar/AjaxCalendar.js" type="text/javascript"></script>

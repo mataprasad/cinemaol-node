@@ -1,11 +1,12 @@
 var db = require('../db');
 var fs = require("fs");
 var path = require('path');
+var url = require('url');
 
 
 function initModel(req) {
     var rIp = req.connection.remoteAddress;
-    return { ip: rIp, data: null };
+    return { ip: rIp, data: null,message:null };
 }
 
 exports.index = function(req, res) {
@@ -36,10 +37,15 @@ If you want to access the "req/res" in the EJS templates, you can either pass th
 	*/
 
     db.SpGetMoviesImageURL(function(data) {
-        model.data = data;
-        res.render('index', model);
-    });
-};
+        
+            db.FillMovieList(function (data1)
+            {
+                model.data = data;
+                model.data1=data1;
+                res.render('index', model);
+            });        
+        });
+    };
 
 exports.login = function(req, res) {
 
@@ -120,20 +126,37 @@ exports.manageShow = function(req, res) {
 
 
     exports.addMovie=function(req, res) {	
-        fs.renameSync(req.file.path, req.file.path+path.extname(req.file.originalname));
-      // res.set('Content-Type', 'application/json');
-       
-      // db.SpAddShowInfo(req.body,function(data) {
-       //var data={ text:"insterted success fully."};
-       console.log(req.file);
-        res.send(req.body);	
-   // });
-      
+        var finalName=req.file.path+path.extname(req.file.originalname); 
+        fs.renameSync(req.file.path, finalName);
+        finalName=finalName.replace("www/","");
+        //res.set('Content-Type', 'application/json');
+        //db.SpAddShowInfo(req.body,function(data) {
+        //var data={ text:"insterted success fully."};
+        //SpAddNewMovie
+        //console.log(req.file);
+        //res.send(req.body);	
+        //});
+
+       //res.set('Content-Type', 'application/json');
+       var model = initModel(req);
+       db.SpAddNewMovie(req.body,finalName,function(data) {
+       var message="insterted success fully.";
+        
+            model.message=message;
+            res.render('public/manage-movie', model);
+    });
     };
     
     exports.manageMovie = function(req, res) {
         
             var model = initModel(req);
-        
+
+
+            var url_parts = url.parse(req.url, true);
+            var query = url_parts.query;
+
+            console.log(query);
+            console.log(req.params);
+            model.message="";
             res.render('public/manage-movie', model);
         };
